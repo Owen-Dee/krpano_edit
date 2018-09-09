@@ -54,7 +54,6 @@
                 debugger;
                 let krpano = $(result).find("krpano");
                 let skinXml = `../../../static/viewer/skin/skin.xml`;
-                // let skinXml = `../../../static/viewer-1.8/skin/skin.xml`;
                 // let skinXml = `http://j3ddev.oss-cn-shanghai.aliyuncs.com/Data/KRPano/designpanos/skin1.xml`;
                 let baseDir = "{0}/{1}/".format('http://j3ddev.oss-cn-shanghai.aliyuncs.com/Data/KRPano/designpanos/panos', designId);
                 krpano.attr("basedir", baseDir);
