@@ -1,0 +1,39 @@
+@import '../../../styles/global.scss';
+.catalog {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    background: $globalDarkBackgroundColor;
+    width: $catalogWidth;
+    height: calc(100% - 50px);
+    font-size: 14px;
+    color: #b4b4b4;
+    .room-name {
+        height: 30px;
+        display: flex;
+        width: 100%;
+        background: $globalGrayBackgroundColor;
+        justify-content: center;
+        align-items: center;
+    }
+    .hotspot-added {
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .add-btn {
+            width: 230px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid $globalGrayBackgroundColor;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        .add-btn:hover {
+            color: $goldColor;
+        }
+    }
+}

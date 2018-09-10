@@ -9,27 +9,38 @@
 </template>
 <script>
     import KrpanoService from '../../api/krpanoService.js';
-    import frontImg from '../../../static/viewer/images/front.png';
-    import upImg from '../../../static/viewer/images/up.png';
-    import rightImg from '../../../static/viewer/images/right.png';
-    import downImg from '../../../static/viewer/images/down.png';
-    import leftImg from '../../../static/viewer/images/left.png';
+    import topImg from './img/top.png';
+    import leftOne from './img/left_one.png';
+    import leftTwo from './img/left_two.png';
+    import rightOne from './img/right_one.png';
+    import rightTwo from './img/right_two.png';
 
     export default {
-        name:'krpano',
+        name:'Krpano',
         data(){
             return {
-                krpanoObj: null,
+                krpanoAPI: null,
                 hotspotX: 0,
                 hotspotY: 0,
                 hotspotName: null,
             }
         },
+        created() {
+          window.Bus.$on(window.EventEnum.ADD_HOTSPOT, () => {
+            this.addHotSpot();
+          });
+        },
         mounted(){
             this.$nextTick(() => {
-                let xml = 'https://j3ddev.oss-cn-shanghai.aliyuncs.com/Data/KRPano/designpanos/panos/32800/fc1617c1-21a8-4fd3-abd1-65b64c9246a6.xml';
+                let xmlUrl = '';
+                if (process.env.NODE_ENV === 'production') {
+                  xmlUrl = `./static/viewer/krpano.xml`;
+                } else {
+                  xmlUrl = `../../../static/viewer/krpano.xml`;
+                }
+
                 embedpano({
-                    xml: '../../../static/viewer/krpano.xml',
+                    xml: xmlUrl,
                     target: 'krpano',
                     html5: 'prefer',
                     id: 'quPlusKrpano',
@@ -39,12 +50,11 @@
             });
         },
         methods:{
-          krpanoOnready(krpanoObj) {
-            this.krpanoObj = krpanoObj;
+          krpanoOnready(krpanoAPI) {
+            this.krpanoAPI = krpanoAPI;
+            this.$store.dispatch('recordKrpanoAPI', krpanoAPI);
             let designId = 32800;
             let jobId = '2ccc8a1c-d66b-4529-8694-abc24a0d5fa6';
-            // let designId = 32800;
-            // let jobId = 'fc1617c1-21a8-4fd3-abd1-65b64c9246a6';
             let krpanoService = KrpanoService.getInstance();
             krpanoService.getKrpanoXml(designId, jobId).then((result) => {
                 if (!result) {
@@ -53,47 +63,50 @@
 
                 debugger;
                 let krpano = $(result).find("krpano");
-                let skinXml = `../../../static/viewer/skin/skin.xml`;
-                // let skinXml = `http://j3ddev.oss-cn-shanghai.aliyuncs.com/Data/KRPano/designpanos/skin1.xml`;
-                let baseDir = "{0}/{1}/".format('http://j3ddev.oss-cn-shanghai.aliyuncs.com/Data/KRPano/designpanos/panos', designId);
+                let skinXml = '';
+                if (process.env.NODE_ENV === 'production') {
+                  skinXml = `./static/viewer/skin/skin.xml`;
+                } else {
+                  skinXml = `../../../static/viewer/skin/skin.xml`;
+                }
+
+                let baseDir = "{0}/{1}/".format(process.env.KRPANOURL, designId);
                 krpano.attr("basedir", baseDir);
                 krpano.find('include').attr('url', skinXml);
                 krpano.find("cube").each(function(ele) {
                     let imgurl = $(this).attr("url");
-                    if (!imgurl.startsWith("%")) {
-                        $(this).attr("url", "%BASEDIR%/{0}".format(imgurl));
+                    if (!imgurl.startsWith('%')) {
+                        $(this).attr('url', '%BASEDIR%/{0}'.format(imgurl));
                     }
                 });
 
                 krpano.find("scene").each(function(ele) {
-                    let title = $(this).attr("title");
+                    let title = $(this).attr('title');
                     if (!title) {
-                        $(this).attr("title", '卧室');
+                        $(this).attr('title', '卧室');
                     }
                 });
-
-                let self = this;
-                window.getHotspotName = this.getHotspotName;
-                krpano.find('hotspot').each(function(ele) {
-                    $(this).attr("ondown", "draghotspot");
-                    $(this).attr("onup", "dragmouseup");
-                    var hs_name = "hs" + ((Date.now() + Math.random()) | 0);
-                    $(this).attr('name', hs_name);
-                    $(this).attr("onclick", `js(window.getHotspotName(${hs_name}))`);
-                });
-
                 window.getHotspot = this.getHotspot;
                 window.saveHotspot = this.saveHotspot;
+                window.showHotspotPanel = this.showHotspotPanel;
+                krpano.find('hotspot').each(function(ele) {
+                    $(this).attr('ondown', 'draghotspot');
+                    $(this).attr('onup', 'dragmouseup');
+                    let hotspotName = 'hs' + ((Date.now() + Math.random()) | 0);
+                    $(this).attr('name', hotspotName);
+                    $(this).attr('onclick', `js(window.showHotspotPanel(${hotspotName}))`);
+                });
                 let autorotate = `<autorotate enabled="false" />`;
                 krpano.append(autorotate);
                 let xmlStr = krpano[0].outerHTML;
-                this.krpanoObj.call("loadxml(" + xmlStr + ", null, MERGE, BLEND(0.5));");
+                this.krpanoAPI.call(`loadxml(${xmlStr}, null, MERGE, BLEND(0.5));`);
             }).catch((error) => {
                console.error('getKrpanoXml error: ' + error);
             });
           },
-          getHotspotName(name) {
+          showHotspotPanel(name) {
             this.hotspotName = name;
+            window.Bus.$emit(window.EventEnum.SHOW_HOTSPOT_PANEL, name);
           },
           getHotspot(ath, atv) {
             this.hotspotX = ath;
@@ -106,51 +119,37 @@
             console.log('y:' + this.hotspotY);
           },
           addHotSpot() {
-            if (!this.krpanoObj) {
+            if (!this.krpanoAPI) {
               return;
             }
 
-            var h = this.krpanoObj.get("view.hlookat");
-            var v = this.krpanoObj.get("view.vlookat");
-            var hs_name = "hs" + ((Date.now() + Math.random()) | 0);  // create unique/randome name
-            this.krpanoObj.call("addhotspot(" + hs_name + ")");
-            this.krpanoObj.set("hotspot["+hs_name+"].url", downImg);
-            this.krpanoObj.set("hotspot["+hs_name+"].ath", h);
-            this.krpanoObj.set("hotspot["+hs_name+"].atv", v);
-            this.krpanoObj.set("hotspot["+hs_name+"].distorted", false);
-            this.krpanoObj.set("hotspot["+hs_name+"].style", "hotspot_room");
-            this.krpanoObj.set("hotspot["+hs_name+"].linkedscene", "scene_69bf4a07-0948-4cd8-9d31-8e552183cc19");
-            if ( this.krpanoObj.get("device.html5") ) {
-              // for HTML5 it's possible to assign JS functions directly to krpano events
-              this.krpanoObj.set("hotspot["+hs_name+"].onclick", () => {
-                this.hotspotName = hs_name;
+            let ath = this.krpanoAPI.get('view.hlookat');
+            let atv = this.krpanoAPI.get('view.vlookat');
+            let hotspotName = 'hs' + ((Date.now() + Math.random()) | 0);
+            this.krpanoAPI.call(`addhotspot(${hotspotName})`);
+            this.krpanoAPI.set(`hotspot[${hotspotName}].url`, topImg);
+            this.krpanoAPI.set(`hotspot[${hotspotName}].ath`, ath);
+            this.krpanoAPI.set(`hotspot[${hotspotName}].atv`, atv);
+            this.krpanoAPI.set(`hotspot[${hotspotName}].distorted`, false);
+            this.krpanoAPI.set(`hotspot[${hotspotName}].style`, 'hotspot_top');
+            this.krpanoAPI.set(`hotspot[${hotspotName}].linkedscene`, 'scene_69bf4a07-0948-4cd8-9d31-8e552183cc19');
+            if ( this.krpanoAPI.get('device.html5') ) {
+              this.krpanoAPI.set(`hotspot[${hotspotName}].onclick`, () => {
+                  this.hotspotName = hotspotName;
+                  window.Bus.$emit(window.EventEnum.SHOW_HOTSPOT_PANEL, hotspotName);
               });
-              this.krpanoObj.call("set(hotspot[" + hs_name + "].ondown, draghotspot(););");
-              this.krpanoObj.call("set(hotspot[" + hs_name + "].onup, dragmouseup(););");
-              this.krpanoObj.call("set(hotspot[" + hs_name + "].onloaded, add_all_the_time_tooltip(););");
+              this.krpanoAPI.call(`set(hotspot[${hotspotName}].ondown, draghotspot(););`);
+              this.krpanoAPI.call(`set(hotspot[${hotspotName}].onup, dragmouseup(););`);
+              this.krpanoAPI.call(`set(hotspot[${hotspotName}].onloaded, add_all_the_time_tooltip(););`);
             }
           },
           setHotspotIcon() {
-            this.krpanoObj.set("hotspot[" + this.hotspotName + "].url", downImg);
+            this.krpanoAPI.set("hotspot[" + this.hotspotName + "].url", topImg);
           }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-  #wrapper{
-      width: 100%;
-      height: 100%;
-      position: absolute;
-        #krpano{
-            width: 100%;
-            height: 100%;
-        }
-        .add-btn {
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          cursor: pointer;
-        }
-  }
+@import './style/krpano.scss';
 </style>

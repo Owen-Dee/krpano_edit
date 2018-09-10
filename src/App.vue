@@ -1,16 +1,25 @@
 <template>
   <div id="app">
     <krpano/>
+    <navbar/>
+    <catalog/>
+    <hotspot/>
   </div>
 </template>
 
 <script>
-import krpano from './components/krpano/krpano.vue'
+import krpano from './components/krpano/krpano';
+import navbar from './components/navbar/nabar';
+import catalog from './components/catalog/catalog';
+import hotspot from './components/hotspot/hotspot';
 
 export default {
   name: 'App',
   components: {
-    krpano
+    krpano,
+    navbar,
+    catalog,
+    hotspot
   }
 }
 </script>

@@ -1,0 +1,63 @@
+@import '../../../styles/global.scss';
+.hotspot {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    background: $globalDarkBackgroundColor;
+    width: $catalogWidth;
+    height: calc(100% - 50px);
+    font-size: 14px;
+    color: #b4b4b4;
+    z-index: 1001;
+    .title {
+        height: 30px;
+        width: 100%;
+        position: relative;
+        line-height: 30px;
+        border-bottom: 1px solid #5d5d5d;
+        .name {
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 0px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: $goldColor;
+        }
+    }
+    .options {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+        .name {
+            margin-bottom: 15px;
+        }
+        .items {
+            width: 100%;
+            height: auto;
+            .item {
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                background: $globalGrayBackgroundColor;
+                text-align: center;
+                line-height: 70px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                cursor: pointer;
+                img {
+                    vertical-align: middle;
+                    display: inline-block;
+                }
+            }
+            .item:hover {
+                background: $goldColor;
+            }
+        }
+    }
+}

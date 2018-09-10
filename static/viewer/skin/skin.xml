@@ -1,8 +1,7 @@
 <krpano>
 
     <style name="hotspot_room"
-           text=""
-           url="images/front.png"
+           url="images/top.png"
            framewidth="96" frameheight="96" frame="0" lastframe="8"
            onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));js(OnHotspotRoomClicked(get(linkedscene))););"
            loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
@@ -12,7 +11,7 @@
     />
 
     <style name="hotspot_room_left"
-           url="images/left.png"
+           url="images/left_one.png"
            framewidth="48" frameheight="48" frame="0" lastframe="8"
            onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); get(skin_settings.loadscene_blend)); js(OnHotspotRoomClicked(get(linkedscene))););"
            loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
@@ -22,7 +21,7 @@
     />
 
     <style name="hotspot_room_right"
-           url="images/right.png"
+           url="images/right_one.png"
            framewidth="48" frameheight="48" frame="0" lastframe="8"
            onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend)); js(OnHotspotRoomClicked(get(linkedscene))););"
            loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
@@ -30,6 +29,58 @@
            onover="copy(layer[skin_tooltip].html, tooltip);set(layer[skin_tooltip].visible, true);tween(layer[skin_tooltip].alpha, 1.0, 0.1);asyncloop(hovering, copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
            onout="tween(layer[skin_tooltip].alpha, 0.0, 0.1, default, set(layer[skin_tooltip].visible,false), copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
     />
+
+    <!-- 热点样式 begin -->
+    <style name="hotspot_top"
+           url="images/top.png"
+           framewidth="96" frameheight="96" frame="0" lastframe="8"
+           onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));js(OnHotspotRoomClicked(get(linkedscene))););"
+           loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
+           onloaded="add_all_the_time_tooltip()"
+           onover="copy(layer[skin_tooltip].html, tooltip);set(layer[skin_tooltip].visible, true);tween(layer[skin_tooltip].alpha, 1.0, 0.1);asyncloop(hovering, copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+           onout="tween(layer[skin_tooltip].alpha, 0.0, 0.1, default, set(layer[skin_tooltip].visible,false), copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+    />
+
+    <style name="hotspot_left_one"
+           url="images/left_one.png"
+           framewidth="96" frameheight="96" frame="0" lastframe="8"
+           onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));js(OnHotspotRoomClicked(get(linkedscene))););"
+           loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
+           onloaded="add_all_the_time_tooltip()"
+           onover="copy(layer[skin_tooltip].html, tooltip);set(layer[skin_tooltip].visible, true);tween(layer[skin_tooltip].alpha, 1.0, 0.1);asyncloop(hovering, copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+           onout="tween(layer[skin_tooltip].alpha, 0.0, 0.1, default, set(layer[skin_tooltip].visible,false), copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+    />
+
+    <style name="hotspot_left_two"
+           url="images/left_two.png"
+           framewidth="96" frameheight="96" frame="0" lastframe="8"
+           onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));js(OnHotspotRoomClicked(get(linkedscene))););"
+           loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
+           onloaded="add_all_the_time_tooltip()"
+           onover="copy(layer[skin_tooltip].html, tooltip);set(layer[skin_tooltip].visible, true);tween(layer[skin_tooltip].alpha, 1.0, 0.1);asyncloop(hovering, copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+           onout="tween(layer[skin_tooltip].alpha, 0.0, 0.1, default, set(layer[skin_tooltip].visible,false), copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+    />
+
+    <style name="hotspot_right_one"
+           url="images/right_one.png"
+           framewidth="96" frameheight="96" frame="0" lastframe="8"
+           onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));js(OnHotspotRoomClicked(get(linkedscene))););"
+           loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
+           onloaded="add_all_the_time_tooltip()"
+           onover="copy(layer[skin_tooltip].html, tooltip);set(layer[skin_tooltip].visible, true);tween(layer[skin_tooltip].alpha, 1.0, 0.1);asyncloop(hovering, copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+           onout="tween(layer[skin_tooltip].alpha, 0.0, 0.1, default, set(layer[skin_tooltip].visible,false), copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+    />
+
+    <style name="hotspot_right_two"
+           url="images/right_two.png"
+           framewidth="96" frameheight="96" frame="0" lastframe="8"
+           onclick="if(linkedscene, skin_hidetooltips(); tween(scale,0.25,0.5); tween(oy,-20,0.5); tween(alpha,0,0.5); loadscene(get(linkedscene),null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));js(OnHotspotRoomClicked(get(linkedscene))););"
+           loadTip="if(skin_settings.tooltips_hotspots, copy(tooltip,scene[get(linkedscene)].title); loadstyle(skin_tooltips); );add_all_the_time_tooltip()"
+           onloaded="add_all_the_time_tooltip()"
+           onover="copy(layer[skin_tooltip].html, tooltip);set(layer[skin_tooltip].visible, true);tween(layer[skin_tooltip].alpha, 1.0, 0.1);asyncloop(hovering, copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+           onout="tween(layer[skin_tooltip].alpha, 0.0, 0.1, default, set(layer[skin_tooltip].visible,false), copy(layer[skin_tooltip].x,mouse.stagex); copy(layer[skin_tooltip].y,mouse.stagey); );"
+    />
+    <!-- 热点样式 end -->
 
     <style name="hotspot_material"
            url="images/hotspot_material.png"

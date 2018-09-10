@@ -1,0 +1,49 @@
+@import '../../../styles/global.scss';
+.navbar {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 0px;
+    left: 0px;
+    background: $globalDarkBackgroundColor;
+    z-index: 100;
+    font-size: 16px;
+    color: #cbc9c9;
+    .title {
+        position: absolute;
+        width: 120px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .title-control {
+        left: 0px;
+        right: 0px;
+        margin: auto;
+        background: $globalGrayBackgroundColor;
+    }
+    .btn-group {
+        position: absolute;
+        width: 160px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 0px;
+        margin: auto;
+        .save-btn {
+            margin-right: 5px;
+        }
+        .btn {
+            width: 60px;
+            height: 26px;
+            background: $globalGrayBackgroundColor;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+    }
+}
