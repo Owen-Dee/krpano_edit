@@ -4,6 +4,7 @@
     <navbar/>
     <catalog/>
     <hotspot/>
+    <panorama/>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import krpano from './components/krpano/krpano';
 import navbar from './components/navbar/nabar';
 import catalog from './components/catalog/catalog';
 import hotspot from './components/hotspot/hotspot';
+import panorama from './components/panorama/panorama';
 
 export default {
   name: 'App',
@@ -19,7 +21,8 @@ export default {
     krpano,
     navbar,
     catalog,
-    hotspot
+    hotspot,
+    panorama
   }
 }
 </script>

@@ -36,4 +36,62 @@
             color: $goldColor;
         }
     }
+    .hotspots-container {
+        width: 100%;
+        height: calc(100% - 80px);
+        padding-left: 15px;
+        .item {
+            width: 230px;
+            height: 180px;
+            cursor: pointer;
+            .img {
+                width: 100%;
+                height: 100%;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    vertical-align: bottom;
+                }
+            }
+            .description {
+                width: 100%;
+                height: 26px;
+                line-height: 26px;
+                background: $globalGrayBackgroundColor;
+                position: relative;
+                .name {
+                    display: inline-block;
+                    margin-left: 5px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    width: 200px;
+                }
+                .delete-btn {
+                    display: inline-block;
+                    position: absolute;
+                    right: 5px;
+                    top: 4px;
+                    .btn {
+                        width: 20px;
+                        height: 20px;
+                    }
+                    .normal {
+                        display: block;
+                    }
+                    .active {
+                        display: none;
+                    }
+                }
+                .delete-btn:hover {
+                    .normal {
+                        display: none;
+                    }
+                    .active {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
 }

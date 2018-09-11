@@ -765,12 +765,12 @@ delayedcall(startpic2,0.5,set(layer[startpic_container].enabled,false);set(layer
         screentosphere(dx, dy, ath, atv);
         roundval(ath, 3);
         roundval(atv, 3);
-        js(window.getHotspot(get(ath), get(atv)));
+        js(window.hotspotMouseDown(get(ath), get(atv), get(name)));
       );
     </action>
 
     <action name="dragmouseup">
-      jscall(window.saveHotspot());
+      jscall(window.hotspotMouseUp());
    </action>
 
     <action name="add_all_the_time_tooltip_for_VR">
@@ -855,4 +855,44 @@ delayedcall(startpic2,0.5,set(layer[startpic_container].enabled,false);set(layer
         );
       );
     </action>
+
+    <!-- map -->
+    <!-- 地图点中相同的代码，都写在了style里面，修改的时候只需要修改style里面的代码，提高了效率。
+    在onclick里，先是用subtxt得出spot后面的数字，也就是index，然后检查是否点击的热点就是当前场景，
+    因为没有必要点击当前场景的热点又载入一遍，如果是点击其他的热点，则载入其他场景，
+    载入场景的loadscene中利用了之前得到的spotid，这样就不用每次都写场景的名字了。-->
+     <style name="spot" 
+            url="images/vtourskin_mapspot.png" 
+            scale="1.2" 
+            oy="-17" 
+            align="lefttop" 
+            edge="center" 
+            zorder="2" 
+            onclick="subtxt(spotid,get(name),4,2);
+                     if(spotid != scene[get(xml.scene)].index,loadscene(get(scene[get(spotid)].name),null,MERGE,BLEND(1)););" />  
+
+
+	<!-- 激活热点 - %1 = 当前雷达的方向值heading -->
+	<action name="activatespot">  
+        <!-- 因此绿色地图点会在每次激活时替换蓝色普通地图点，因此每次激活之前，
+        首先保证所有蓝色地图点是可见的，如果没有下面这个代码，
+        则会使得上一个场景的蓝色地图点消失，这里用的是一个循环语句-->  
+        for(set(i,0),i LT scene.count,inc(i),  
+        txtadd(spotname,'spot',get(i));  
+        set(layer[get(spotname)].visible, true);  
+        );  
+        <!-- 将当前热点的坐标复制到雷达和激活点的坐标，直接利用当前场景的index，
+        反过来得到layer的名字，这样就使得这个activetespot的参数只要一个就可以了-->  
+        txtadd(spotidnow,'spot',get(scene[get(xml.scene)].index));  
+        copy(layer[radar].x, layer[get(spotidnow)].x);  
+        copy(layer[radar].y, layer[get(spotidnow)].y);  
+        copy(layer[activespot].x, layer[get(spotidnow)].x);  
+        copy(layer[activespot].y, layer[get(spotidnow)].y);  
+        <!-- 将第二个参数赋值到雷达的heading -->  
+        set(layer[radar].heading, %1);  
+        <!-- 显示雷达和绿色激活热点，以及隐藏当前场景的地图点 -->  
+        set(layer[radar].visible, true);  
+        set(layer[activespot].visible, true);  
+        set(layer[get(spotidnow)].visible, false);  
+    </action> 
 </krpano>

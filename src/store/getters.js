@@ -1,8 +1,8 @@
 const getters = {
     // krpano
     krpanoAPI: state => state.krpano.krpanoAPI,
-    //   sidebar: state => state.app.sidebar,
-    //   token: state => state.user.token,
+    activeScene: state => state.krpano.activeScene,
+    scenes: state => state.krpano.scenes,
 };
 
 export default getters
