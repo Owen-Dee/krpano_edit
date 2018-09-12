@@ -194,6 +194,40 @@
 
               return imgUrl;
           },
+          getXYPoint(index) {
+            let x = 0, y = 0;
+            let xyPoints = [
+               {
+              x: -2.87,
+              y: -5.08
+            },{
+              x: -4.07,
+              y: 2.08
+            }];
+            let referPoint = {
+              x: -6.04,
+              y: 3.27
+            };
+
+            let width = 10.46, // 设计的宽度
+                height = 10.699; // 设计的高度
+            const imgWidth = 240, // 户型图的宽度
+                  imgHeight = 280; // 户型图的高度
+            
+            let xyPoint = xyPoints[index];
+            if (width > height) {
+              x = (imgWidth / width) * Math.abs(xyPoint.x - referPoint.x);
+              y = (imgWidth / width) * Math.abs(xyPoint.y - referPoint.y);
+            } else {
+              x = (imgWidth / height) * Math.abs(xyPoint.x - referPoint.x);
+              y = (imgWidth / height) * Math.abs(xyPoint.y - referPoint.y);
+            }
+
+            return {
+              x: x,
+              y: y
+            }
+          },
           getMapXml() {
             let map = `${process.env.DESIGNIMGURL}/e351020d-4244-4ab1-9fff-6f9ec886291d/thumbnail.png?` + new Date(),
                 radarSwf = '',
@@ -211,10 +245,9 @@
             let hotspotLayer = ``;
             let i = 0;
             this.scenes.forEach((scene) => {
-                let x = 240 * Math.random();
-                let y = 280 * Math.random();
+                let xyPoint = this.getXYPoint(i);
                 let name = 'spot' + i;
-                let layer = `<layer name="${name}" style="spot" x="${x}" y="${y}" />`;
+                let layer = `<layer name="${name}" style="spot" x="${xyPoint.x}" y="${xyPoint.y}" />`;
                 hotspotLayer += layer;
                 i++;
             });
