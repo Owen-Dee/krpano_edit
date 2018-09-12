@@ -31,22 +31,27 @@
                 hotspots: [
                     {
                         key: 'top',
+                        style: 'hotspot_top', // 该样式已在static/viewer/skin/skin.xml中写好
                         img: topImg
                     },
                     {
                         key: 'left_one',
+                        style: 'hotspot_left_one',
                         img: leftOneImg
                     },
                     {
                         key: 'left_two',
+                        style: 'hotspot_left_two',
                         img: leftTwoImg
                     },
                     {
                         key: 'right_one',
+                        style: 'hotspot_right_one',
                         img: rightOneImg
                     },
                     {
                         key: 'right_two',
+                        style: 'hotspot_right_two',
                         img: rightTwoImg
                     },
                 ],
@@ -57,7 +62,13 @@
         computed: {
             krpanoAPI() {
                 return this.$store.getters.krpanoAPI;
-            }
+            },
+            activeScene() {
+                return this.$store.getters.activeScene;
+            },
+            scenes() {
+                return this.$store.getters.scenes;
+            },
         },
         created() {
             window.Bus.$on(window.EventEnum.SHOW_HOTSPOT_PANEL, (hotspotName) => {
@@ -68,6 +79,18 @@
         methods: {
             changeHotspot(item) {
                 this.krpanoAPI.set(`hotspot[${this.hotspotName}].url`, item.img);
+                this.krpanoAPI.set(`hotspot[${this.hotspotName}].style`, item.style);
+                this.scenes.forEach((scene) => {
+                    if (scene.name === this.activeScene.name) {
+                        let hotspots = scene.hotspots;
+                        hotspots.forEach((hotspot) => {
+                            if (hotspot.name === this.hotspotName) {
+                                hotspot.url = item.img;
+                                hotspot.style = item.style;
+                            }
+                        });
+                    }
+                });
             },
             closePanel() {
                 this.showHotspotPanel = false;

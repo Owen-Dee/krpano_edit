@@ -27,6 +27,7 @@
 
 <script>
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+    import { deepClone } from '../../utils/common.js';
 
     export default {
         name: 'Panorama',
@@ -60,7 +61,7 @@
                 this.showPanorama = false;
             },
             showCurrentScene(item) {
-                this.$store.dispatch('recordActiveScene', {...item});
+                this.$store.dispatch('recordActiveScene', deepClone({}, item));
                 let name = item.name;
                 let jsCall = `skin_hidetooltips(); 
                               tween(scale,0.25,0.5); 
@@ -68,6 +69,7 @@
                               tween(alpha,0,0.5); 
                               loadscene(${name},null,get(skin_settings.loadscene_flags),get(skin_settings.loadscene_blend));`;
                 this.krpanoAPI.call(jsCall);
+                window.resetHotspots(name);
             }
         }
     }

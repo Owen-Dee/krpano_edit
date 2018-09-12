@@ -863,13 +863,15 @@ delayedcall(startpic2,0.5,set(layer[startpic_container].enabled,false);set(layer
     载入场景的loadscene中利用了之前得到的spotid，这样就不用每次都写场景的名字了。-->
      <style name="spot" 
             url="images/vtourskin_mapspot.png" 
-            scale="1.2" 
+            scale="0.3" 
             oy="-17" 
             align="lefttop" 
             edge="center" 
             zorder="2" 
             onclick="subtxt(spotid,get(name),4,2);
-                     if(spotid != scene[get(xml.scene)].index,loadscene(get(scene[get(spotid)].name),null,MERGE,BLEND(1)););" />  
+                     if(spotid != scene[get(xml.scene)].index,
+                        loadscene(get(scene[get(spotid)].name),null,MERGE,BLEND(1));
+                        js(window.resetHotspots(get(scene[get(spotid)].name)));)" />  
 
 
 	<!-- 激活热点 - %1 = 当前雷达的方向值heading -->
