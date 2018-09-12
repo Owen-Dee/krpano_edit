@@ -3,12 +3,29 @@ class KrpanoService {
 
     static _instance = null;
 
+    webAPI(url, type, params) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: url,
+                type: type,
+                data: params,
+                dataType: 'json',
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function(data) {
+                    reject(data);
+                }
+            });
+        });
+    }
+
     getKrpanoXml(designId, jobId) {
         let xmlUrl = '{0}/{1}/{2}.xml'.format(process.env.KRPANOURL, designId, jobId);
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: xmlUrl,
-                method: 'get',
+                method: 'Get',
                 dataType: 'XML',
                 success: function(data) {
                     resolve(data);
@@ -18,6 +35,13 @@ class KrpanoService {
                 }
             });
         });
+    }
+
+    getRenderJobs(params) {
+        let url = `${process.env.RENDERURL}/Render/GetJobsByDesignId`;
+        let type = 'Get';
+
+        return this.webAPI(url, type, params);
     }
 
     static getInstance() {

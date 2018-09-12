@@ -5,7 +5,7 @@
 </template>
 <script>
     import KrpanoService from '../../api/krpanoService.js';
-    import { deepClone } from '../../utils/common.js';
+    import { deepClone, getUrlParam } from '../../utils/common.js';
     import topImg from './img/top.png';
     import leftOneImg from './img/left_one.png';
     import leftTwoImg from './img/left_two.png';
@@ -41,6 +41,8 @@
           window.Bus.$on(window.EventEnum.ADD_HOTSPOT, () => {
             this.addHotSpot();
           });
+
+          this.initRenderJobs();
         },
         mounted(){
             this.$nextTick(() => {
@@ -62,19 +64,40 @@
             });
         },
         methods:{
+          initRenderJobs() {
+            debugger
+            let designId = getUrlParam('guid');
+            let params = {
+                designId: designId,
+                status: 1,
+                skip: 0,
+                limit: 6,
+                renderType: 'omnistereo', //全景图
+            };
+            let krpanoService = KrpanoService.getInstance();
+            krpanoService.getRenderJobs(params).then((result) => {
+              if (!result || !result.items || result.items.length === 0) {
+                return;
+              }
+
+              debugger
+            }).catch((error) => {
+               console.error('getRenderJobs error: ' + error);
+            });
+          },
           krpanoOnready(krpanoAPI) {
             this.krpanoAPI = krpanoAPI;
             this.$store.dispatch('recordKrpanoAPI', krpanoAPI);
-            let designId = 32800;
-            // let jobId = '2ccc8a1c-d66b-4529-8694-abc24a0d5fa6';
-            let jobId = '5a1afb94-0605-48ed-b995-f2631393ab42';
+            // let designId = 32800;
+            // let jobId = '5a1afb94-0605-48ed-b995-f2631393ab42';
+            let designId = getUrlParam('designId');
+            let jobId = getUrlParam('jobId');
             let krpanoService = KrpanoService.getInstance();
             krpanoService.getKrpanoXml(designId, jobId).then((result) => {
                 if (!result) {
                   return;
                 }
 
-                debugger;
                 let krpano = $(result).find("krpano");
                 //1. 设置baseDir,配置全景图的路径
                 let baseDir = "{0}/{1}/".format(process.env.KRPANOURL, designId);
@@ -197,7 +220,7 @@
           getXYPoint(index) {
             let x = 0, y = 0;
             let xyPoints = [
-               {
+              {
               x: -2.87,
               y: -5.08
             },{

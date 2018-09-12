@@ -1,7 +1,7 @@
 export function deepClone(newObj, oldObj) {
-    var obj = newObj || {};
-    for (var key in oldObj) {
-        var temp = oldObj[key];
+    let obj = newObj || {};
+    for (let key in oldObj) {
+        let temp = oldObj[key];
         if (obj === temp) {
             continue;
         }
@@ -15,3 +15,14 @@ export function deepClone(newObj, oldObj) {
 
     return obj;
 }
+
+export function getUrlParam(name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    let str = window.location.href.split('?')[1];
+    let r = str.match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+
+    return '';
+};
