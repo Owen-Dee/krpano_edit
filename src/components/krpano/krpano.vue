@@ -38,11 +38,9 @@
           //4. 通过点击地图上的标注,重置热点位置
           window.resetHotspots = this.resetHotspots;
 
-          window.Bus.$on(window.EventEnum.ADD_HOTSPOT, () => {
-            this.addHotSpot();
+          window.Bus.$on(window.EventEnum.ADD_HOTSPOT, (job) => {
+            this.addHotSpot(job);
           });
-
-          this.initRenderJobs();
         },
         mounted(){
             this.$nextTick(() => {
@@ -64,32 +62,9 @@
             });
         },
         methods:{
-          initRenderJobs() {
-            debugger
-            let designId = getUrlParam('guid');
-            let params = {
-                designId: designId,
-                status: 1,
-                skip: 0,
-                limit: 6,
-                renderType: 'omnistereo', //全景图
-            };
-            let krpanoService = KrpanoService.getInstance();
-            krpanoService.getRenderJobs(params).then((result) => {
-              if (!result || !result.items || result.items.length === 0) {
-                return;
-              }
-
-              debugger
-            }).catch((error) => {
-               console.error('getRenderJobs error: ' + error);
-            });
-          },
           krpanoOnready(krpanoAPI) {
             this.krpanoAPI = krpanoAPI;
             this.$store.dispatch('recordKrpanoAPI', krpanoAPI);
-            // let designId = 32800;
-            // let jobId = '5a1afb94-0605-48ed-b995-f2631393ab42';
             let designId = getUrlParam('designId');
             let jobId = getUrlParam('jobId');
             let krpanoService = KrpanoService.getInstance();
@@ -151,6 +126,7 @@
                 
                 let thumbUrl = ("{0}/{1}/{2}.tiles/{3}").format(process.env.KRPANOURL, designId, sceneJobId, 'thumb.jpg');
                 let scene = {
+                  mark: 'old', // old:标记为已经有的全景图
                   name: name,
                   thumbUrl: thumbUrl,
                   roomType: title,
@@ -185,7 +161,8 @@
             });
             this.scenes = scenes;
             if (scenes.length > 0) {
-              let activeScene = deepClone({},scenes[0]);
+              let activeScene = deepClone({}, scenes[0]);
+              // 想当前场景中的每个热点添加对应的图片和名称
               this.$store.dispatch('recordActiveScene', activeScene);
             }
             this.$store.dispatch('recordScenes', scenes);
@@ -329,24 +306,40 @@
             this.$store.dispatch('recordActiveScene', activeScene);
             this.$store.dispatch('recordScenes', this.scenes);
           },
-          addHotSpot() {
+          addHotSpot(job) {
             if (!this.krpanoAPI) {
               return;
             }
 
+            // 1. 先添加对应的scene
+            let sceneName = `scene_${job.ID}`;
+            let title = job.RoomTypeDisplayName ? job.RoomTypeDisplayName : '无名称';
+            let thumbUrl = job.PreviewUrl + '?' + new Date();
+            this.krpanoAPI.call(`addscene(${sceneName})`);
+            this.krpanoAPI.set(`scene[${sceneName}].title`, title);
+            let scene = {
+              mark: 'new', // new:标记为新添加的全景图
+              name: sceneName,
+              thumbUrl: thumbUrl,
+              roomType: title,
+              hotspots: []
+            };
+            this.scenes.push(scene);
+
+            // 2. 添加热点,热点的linkedscene对应场景scene的name,
+            // 热点上方显示的文字对应场景scene的title
             let imgUrl = topImg;
             let ath = this.krpanoAPI.get('view.hlookat');
             let atv = this.krpanoAPI.get('view.vlookat');
             let hotspotName = 'spot' + Math.round(Math.random() * 10000000);
             let style = 'hotspot_top';
-            let linkedscene = 'scene_90b95d04-94f8-4054-8f84-a2c40f33e492';
             this.krpanoAPI.call(`addhotspot(${hotspotName})`);
             this.krpanoAPI.set(`hotspot[${hotspotName}].url`, imgUrl);
             this.krpanoAPI.set(`hotspot[${hotspotName}].ath`, ath);
             this.krpanoAPI.set(`hotspot[${hotspotName}].atv`, atv);
             this.krpanoAPI.set(`hotspot[${hotspotName}].distorted`, false);
             this.krpanoAPI.set(`hotspot[${hotspotName}].style`, style);
-            this.krpanoAPI.set(`hotspot[${hotspotName}].linkedscene`, linkedscene);
+            this.krpanoAPI.set(`hotspot[${hotspotName}].linkedscene`, sceneName);
             if ( this.krpanoAPI.get('device.html5') ) {
               this.krpanoAPI.set(`hotspot[${hotspotName}].onclick`, () => {
                   this.hotspotName = hotspotName;
@@ -356,20 +349,21 @@
               this.krpanoAPI.call(`set(hotspot[${hotspotName}].onup, dragmouseup(););`);
               this.krpanoAPI.call(`set(hotspot[${hotspotName}].onloaded, add_all_the_time_tooltip(););`);
             }
-
+            // 3. 更新数据
             let hotspot = {
               url: imgUrl,
               condition: '!webvr.isenabled',
               name: hotspotName,
               ath: ath,
               atv: atv,
-              linkedscene: linkedscene,
+              linkedscene: sceneName,
               style: style
             };
-            this.activeScene.hotspots.push(hotspot);
             this.scenes.forEach((scene) => {
               if (scene.name === this.activeScene.name) {
                 scene.hotspots.push(hotspot);
+                let activeScene = deepClone({}, scene);
+                this.$store.dispatch('recordActiveScene', activeScene);
               }
             });
           },

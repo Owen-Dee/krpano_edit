@@ -70,7 +70,7 @@
         },
         methods: {
             addHotspot() {
-                window.Bus.$emit(window.EventEnum.ADD_HOTSPOT);
+                window.Bus.$emit(window.EventEnum.SHOW_RENDER_JOBS);
             },
             showCurrentHotspot(item) {
                 let ath = parseFloat(item.ath);

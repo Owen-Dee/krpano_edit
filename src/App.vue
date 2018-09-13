@@ -5,6 +5,7 @@
     <catalog/>
     <hotspot/>
     <panorama/>
+    <renderJob/>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import navbar from './components/navbar/nabar';
 import catalog from './components/catalog/catalog';
 import hotspot from './components/hotspot/hotspot';
 import panorama from './components/panorama/panorama';
+import renderJob from './components/renderJob/renderJob';
 
 export default {
   name: 'App',
@@ -22,7 +24,8 @@ export default {
     navbar,
     catalog,
     hotspot,
-    panorama
+    panorama,
+    renderJob
   }
 }
 </script>

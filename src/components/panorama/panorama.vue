@@ -36,7 +36,7 @@
                 settings: {
                     maxScrollbarLength: 200
                 },
-                showPanorama: false
+                showPanorama: false,
             }
         },
         components: {
@@ -47,7 +47,15 @@
                 return this.$store.getters.activeScene;
             },
             scenes() {
-                return this.$store.getters.scenes;
+                let scenes = this.$store.getters.scenes;
+                let renders = [];
+                scenes.forEach((item) => {
+                    if (item.mark === 'old') {
+                        renders.push(item);
+                    }
+                });
+
+                return renders;
             },
             krpanoAPI() {
                 return this.$store.getters.krpanoAPI;

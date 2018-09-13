@@ -75,6 +75,13 @@
                 this.showHotspotPanel = true;
                 this.hotspotName = hotspotName;
             });
+            
+            // 监听点击全景图除热点、底图、房间选择的地方
+            $(document).click((e) =>{
+                if($(e.target).css('transform-style') === 'preserve-3d'){
+                    this.showHotspotPanel = false;
+                }
+            });
         },
         methods: {
             changeHotspot(item) {
