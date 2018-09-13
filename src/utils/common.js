@@ -19,6 +19,10 @@ export function deepClone(newObj, oldObj) {
 export function getUrlParam(name) {
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     let str = window.location.href.split('?')[1];
+    if (!str) {
+        return '';
+    }
+
     let r = str.match(reg);
     if (r != null) {
         return unescape(r[2]);

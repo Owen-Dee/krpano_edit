@@ -67,6 +67,10 @@
             this.$store.dispatch('recordKrpanoAPI', krpanoAPI);
             let designId = getUrlParam('designId');
             let jobId = getUrlParam('jobId');
+            if (!designId || !jobId) {
+              return;
+            }
+            
             let krpanoService = KrpanoService.getInstance();
             krpanoService.getKrpanoXml(designId, jobId).then((result) => {
                 if (!result) {

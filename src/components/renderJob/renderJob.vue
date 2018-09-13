@@ -107,6 +107,10 @@
         },
         methods: {
             initRenderJobs() {
+                if (!this.designId) {
+                    return;
+                }
+
                 let skip = (this.pageIndex - 1) * this.limit;
                 let params = {
                     designId: this.designId,
