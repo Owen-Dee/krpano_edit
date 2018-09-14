@@ -56,8 +56,12 @@
         mounted(){
             this.$nextTick(() => {
                 let xmlUrl = '';
-                if (process.env.NODE_ENV === 'production') {
-                  xmlUrl = `./static/viewer/krpano.xml`;
+                if (process.env.NODE_ENV === 'production') { //发布环境
+                  // 1.对于static文件夹下的静态资源,如果对外发布,
+                  // 所有的资源都拷贝到dist/QuPano文件夹下
+                  // 2.不用编译后默认的static文件夹,是为了防止部署在同一个域下面,
+                  // 与其他项目用webpack编译打包后产生的static文件夹相冲突
+                  xmlUrl = `./QuPano/viewer/krpano.xml`;
                 } else {
                   xmlUrl = `../../../static/viewer/krpano.xml`;
                 }
@@ -117,7 +121,7 @@
             //2. 将引入的skin.xml(包含了样式和逻辑)替换成本地的
             let skinXml = '';
             if (process.env.NODE_ENV === 'production') {
-              skinXml = `./static/viewer/skin/skin.xml`;
+              skinXml = `./QuPano/viewer/skin/skin.xml`;
             } else {
               skinXml = `../../../static/viewer/skin/skin.xml`;
             }
@@ -286,9 +290,9 @@
                 radar = '',
                 mapspotactiveImg = '';
             if (process.env.NODE_ENV === 'production') {
-              radarSwf = `./static/viewer/skin/radar.swf`;
-              radar = `./static/viewer/skin/radar.js`;
-              mapspotactiveImg = `./static/viewer/skin/images/vtourskin_mapspotactive.png`;
+              radarSwf = `./QuPano/viewer/skin/radar.swf`;
+              radar = `./QuPano/viewer/skin/radar.js`;
+              mapspotactiveImg = `./QuPano/viewer/skin/images/vtourskin_mapspotactive.png`;
             } else {
               radarSwf = `../../../static/viewer/skin/radar.swf`;
               radar = `../../../static/viewer/skin/radar.js`;
