@@ -46,7 +46,7 @@
 
   <!-- the VR cursor hotspot -->
   <hotspot name="vr_cursor" keep="true"
-	         url="webvr_cursor_80x80_17f.png"
+	         url="images/webvr_cursor_80x80_17f.png"
 	         visible="false"
 	         enabled="false"
 	         distorted="true"
