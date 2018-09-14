@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="pagination">
-                <paginate v-show="pageCount > 0"
+                <paginate v-if="pageCount > 0"
                         :page-count="pageCount"
                         :page-range="pageRange"
                         :margin-pages="3"
@@ -81,21 +81,27 @@
             }
         },
         watch: {
-            activeScene() {
-                setTimeout(() => {
-                    let hotspots = this.activeScene.hotspots;
-                    this.renders.forEach((item) => { // 当前场景已有选择的全景热点,不可选
-                        item.canChoose = true;
-                        item.isChoosed = false;
-                        if (hotspots && hotspots instanceof Array) {
-                            hotspots.forEach((hs) => {
-                                if (`scene_${item.ID}` === hs.linkedscene) {
-                                    item.canChoose = false;
-                                }
-                            });
-                        }
-                    });
-                }, 0);
+            activeScene: {
+                handler() {
+                    setTimeout(() => {
+                        let hotspots = this.activeScene.hotspots;
+                        this.renders.forEach((item) => { 
+                            item.canChoose = true;
+                            if (`scene_${item.ID}` === this.activeScene.name) { // 当前场景不可选
+                                item.canChoose = false;
+                            }
+
+                            if (hotspots && hotspots instanceof Array) { // 已被热点添加的场景,不可选
+                                hotspots.forEach((hs) => {
+                                    if (`scene_${item.ID}` === hs.linkedscene) {
+                                        item.canChoose = false;
+                                    }
+                                });
+                            }
+                        });
+                    }, 0);
+                },
+                deep: true
             } 
         },
         created() {
@@ -132,7 +138,11 @@
                         item.RoomTypeDisplayName = item.RoomTypeDisplayName ? item.RoomTypeDisplayName : '无名称';
                         item.canChoose = true; // canChoose:当前全景是否可以选
                         item.isChoosed = false; // isChoosed: 当前全景是否被选中
-                        if (hotspots && hotspots instanceof Array) {
+                        if (`scene_${item.ID}` === this.activeScene.name) { // 当前场景不可选
+                            item.canChoose = false;
+                        }
+
+                        if (hotspots && hotspots instanceof Array) { // 已被热点添加的场景,不可选
                             hotspots.forEach((hs) => {
                                 if (`scene_${item.ID}` === hs.linkedscene) {
                                     item.canChoose = false;
