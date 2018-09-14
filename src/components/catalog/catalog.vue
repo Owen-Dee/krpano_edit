@@ -11,7 +11,7 @@
                 </div>
                 <div class="description">
                     <span v-text="item.roomType" :title="item.roomType" class="name"></span>
-                    <span class="delete-btn">
+                    <span class="delete-btn" @click="deleteHotspot(item)">
                         <img class="btn normal" src="./img/delete.svg" alt="">
                         <img class="btn active" src="./img/delete_light.svg" alt="">
                     </span>
@@ -77,6 +77,15 @@
                 let atv = parseFloat(item.atv);
                 this.krpanoAPI.set("view.hlookat", ath);
                 this.krpanoAPI.set("view.vlookat", atv);
+            },
+            deleteHotspot(item) {
+                this.$msgBox.showMsgBox({
+                    title: '温馨提示:',
+                    content: '是否确认删除?'
+                }).then(async () => {
+                    window.Bus.$emit(window.EventEnum.DELETE_HOTSPOT, item);
+                }).catch(() => {
+                });   
             }
         }
     }

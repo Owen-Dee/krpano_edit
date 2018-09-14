@@ -60,7 +60,7 @@
         data() {
             return {
                 pageRange: 3,
-                showRenderJob: true,
+                showRenderJob: false,
                 showLoading: false,
                 designId : getUrlParam('guid'),
                 limit: 6,

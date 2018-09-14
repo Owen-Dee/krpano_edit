@@ -7,10 +7,13 @@ import $ from 'jquery';
 import './utils/global.js';
 import Bus from './utils/bus';
 import EventEnum from './EventEnum.js';
+import MessageBox from './components/common/messageBox/messageBox';
 
 Vue.config.productionTip = false;
 window.Bus = Bus;
 window.EventEnum = EventEnum;
+
+Vue.use(MessageBox);
 
 /* eslint-disable no-new */
 new Vue({

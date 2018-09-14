@@ -44,9 +44,13 @@
           window.showHotspotPanel = this.showHotspotPanel;
           //4. 通过点击地图上的标注,重置热点位置
           window.resetHotspots = this.resetHotspots;
-
+          //5. 添加热点
           window.Bus.$on(window.EventEnum.ADD_HOTSPOT, (job) => {
             this.addHotSpot(job);
+          });
+          //6. 删除热点
+          window.Bus.$on(window.EventEnum.DELETE_HOTSPOT, (item) => {
+            this.deleteHotspot(item);
           });
         },
         mounted(){
@@ -419,6 +423,26 @@
                 this.$store.dispatch('recordActiveScene', activeScene);
               }
             });
+          },
+          deleteHotspot(item) {
+            //1. 从数据中删除对应的信息
+            let hotspotName = item.name;
+            let activeScene = null;
+            this.scenes.forEach((scene) => {
+              if (scene.name === this.activeScene.name) {
+                let hotspots = scene.hotspots;
+                hotspots.forEach((item, index) => {
+                  if (item.name === hotspotName) {
+                    hotspots.splice(index, 1);
+                  }
+                });
+
+                activeScene = deepClone({}, scene);
+              }
+            });
+            this.$store.dispatch('recordActiveScene', activeScene);
+            //2. 页面上删除对应的图标
+            this.krpanoAPI.call("removehotspot(" + hotspotName + ");");
           },
           resetHotspots(sceneName) {
             this.scenes.forEach((scene) => {
