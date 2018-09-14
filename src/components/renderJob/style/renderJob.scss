@@ -6,11 +6,11 @@
     .job-choose {
         width: 660px;
         height: 510px;
-        background: #ffffffdb;
+        background-color: rgba(255, 255, 255, 0.77);
         .header {
             width: 100%;
             height: 30px;
-            background: #323232d9;
+            background: $globalDarkBackgroundColor;
             position: relative;
             color: white;
             line-height: 30px;
@@ -54,7 +54,7 @@
                         position: absolute;
                         width: 100%;
                         height: 100%;
-                        background: #313131b3;
+                        background-color: rgba(46, 46, 46, 0.77);
                         top: 0;
                         left: 0;
                         display: flex;
@@ -103,7 +103,7 @@
             }
             .active {
                 a {
-                    color: #fcc800 !important;
+                    color: $goldColor !important;
                 }
             }
             a:focus {
@@ -125,7 +125,7 @@
             .next-class:hover,
             .page-item:hover {
                 a {
-                    color: #fcc800;
+                    color: $goldColor;
                 }
             }
         }
@@ -146,7 +146,7 @@
                 cursor: pointer;
             }
             .btn:hover {
-                background: #fcc800;
+                background: $goldColor;
             }
         }
     }
