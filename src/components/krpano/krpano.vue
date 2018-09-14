@@ -374,18 +374,27 @@
 
             // 1. 先添加对应的scene
             let sceneName = `scene_${job.ID}`;
-            let title = job.RoomTypeDisplayName ? job.RoomTypeDisplayName : '无名称';
-            let thumbUrl = job.PreviewUrl + '?' + new Date();
-            this.krpanoAPI.call(`addscene(${sceneName})`);
-            this.krpanoAPI.set(`scene[${sceneName}].title`, title);
-            let scene = {
-              mark: 'new', // new:标记为新添加的全景图
-              name: sceneName,
-              thumbUrl: thumbUrl,
-              roomType: title,
-              hotspots: []
-            };
-            this.scenes.push(scene);
+            let isExist = false;
+            this.scenes.forEach((item) => { // 判断选择的场景是否已被添加过
+              if (item.name === sceneName) {
+                isExist = true;
+              }
+            });
+            if (!isExist) { // 没被添加
+              let title = job.RoomTypeDisplayName ? job.RoomTypeDisplayName : '无名称';
+              let thumbUrl = job.PreviewUrl + '?' + new Date();
+              this.krpanoAPI.call(`addscene(${sceneName})`);
+              this.krpanoAPI.set(`scene[${sceneName}].title`, title);
+              let scene = {
+                mark: 'new', // new:标记为新添加的全景图
+                name: sceneName,
+                thumbUrl: thumbUrl,
+                roomType: title,
+                hotspots: []
+              };
+              this.scenes.push(scene);
+            }
+
 
             // 2. 添加热点,热点的linkedscene对应场景scene的name,
             // 热点上方显示的文字对应场景scene的title
