@@ -1,7 +1,8 @@
 <template>
     <div class="panorama">
         <div class="show-panorama-btn" @click="showPanoramaPanel">
-            <img src="./img/house_choose.png" alt="">
+            <img class="normal" src="./img/house_choose.svg" alt="">
+            <img class="active" src="./img/house_choose_high.svg" alt="">
             <div class="title">房间选择</div>
         </div>
 
@@ -61,8 +62,15 @@
                 return this.$store.getters.krpanoAPI;
             }
         },
+        created() {
+            window.Bus.$on(window.EventEnum.CLOSE_PANORAMA, () => {
+                this.showPanorama = false;
+            });
+        },
         methods: {
             showPanoramaPanel() {
+                // 关闭查询的渲染图面板
+                window.Bus.$emit(window.EventEnum.CLOSE_RENDER_JOB);
                 this.showPanorama = true;
             },
             closePanel() {

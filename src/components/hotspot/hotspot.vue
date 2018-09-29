@@ -85,6 +85,9 @@
         },
         methods: {
             changeHotspot(item) {
+                // 记录热点已被编辑过
+                let isHotspotChanged = true;
+                this.$store.dispatch('recordHotspotChanged', isHotspotChanged);
                 this.krpanoAPI.set(`hotspot[${this.hotspotName}].url`, item.img);
                 this.krpanoAPI.set(`hotspot[${this.hotspotName}].style`, item.style);
                 this.scenes.forEach((scene) => {

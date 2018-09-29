@@ -45,6 +45,11 @@
             v-bind:size="{ width: '50px', height: '50px' }"
             v-show="showLoading">
         </vue-loading>
+
+        <mark-info v-bind:show-mark-info="showMarkInfo"
+            v-bind:mark="mark"
+            v-bind:mark-text="markText">
+        </mark-info>
     </div>
 </template>
 
@@ -53,6 +58,7 @@
     import VuePerfectScrollbar from 'vue-perfect-scrollbar';
     import VueLoading from '../common/vueloading.vue';
     import Paginate from '../common/paginate.vue';
+    import MarkInfo from '../common/markInfo.vue';
     import { deepClone, getUrlParam } from '../../utils/common.js';
 
     export default {
@@ -61,19 +67,24 @@
             return {
                 pageRange: 3,
                 showRenderJob: false,
+                showMarkInfo: true,
                 showLoading: false,
                 designId : getUrlParam('guid'),
                 limit: 6,
                 renders: [],
                 pageIndex: 1,
                 pageCount: 0,
-                choosedJob: null
+                choosedJob: null,
+                showMarkInfo: false,
+                mark: false,
+                markText: ''
             }
         },
         components: {
             'vue-perfect-scrollbar': VuePerfectScrollbar,
             'paginate': Paginate,
-            'vue-loading': VueLoading
+            'vue-loading': VueLoading,
+            'mark-info': MarkInfo
         },
         computed: {
             activeScene() {
@@ -105,10 +116,12 @@
             } 
         },
         created() {
-            this.initRenderJobs();
-
             window.Bus.$on(window.EventEnum.SHOW_RENDER_JOBS, () => {
-                this.showRenderJobPanel()
+                this.showRenderJobPanel();
+            });
+
+            window.Bus.$on(window.EventEnum.CLOSE_RENDER_JOB, () => {
+                this.closePanel();
             });
         },
         methods: {
@@ -172,15 +185,28 @@
                 }
 
                 this.renders.forEach((item) => { // 当前场景已有选择的全景热点,不可选
-                    item.isChoosed = false;
                     if (item.ID === job.ID) {
-                        item.isChoosed = true;
+                        job.isChoosed = !job.isChoosed;
+                    } else {
+                        item.isChoosed = false;
                     }
                 });
-                this.choosedJob = job;
+
+                if (job.isChoosed) {
+                    this.choosedJob = job;
+                } else {
+                    this.choosedJob = null;
+                }
             },
             addHotSpot(item) {
                 if (!this.choosedJob) {
+                    this.showMarkInfo = true;
+                    this.mark = false;
+                    this.markText = '请先选择要跳转的空间!';
+                    setTimeout(() => {
+                        this.showMarkInfo = false;
+                    }, 2000);
+
                     return;
                 }
 

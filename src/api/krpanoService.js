@@ -22,6 +22,7 @@ class KrpanoService {
 
     getKrpanoXml(designId, jobId) {
         let xmlUrl = '{0}/{1}/{2}.xml'.format(process.env.KRPANOURL, designId, jobId);
+        xmlUrl = xmlUrl + `?${new Date()}`;
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: xmlUrl,
@@ -37,9 +38,31 @@ class KrpanoService {
         });
     }
 
+    checkImageExist(imgUrl) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: imgUrl,
+                method: 'Get',
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function(err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
     getRenderJobs(params) {
         let url = `${process.env.RENDERURL}/Render/GetJobsByDesignId`;
         let type = 'Get';
+
+        return this.webAPI(url, type, params);
+    }
+
+    updatePanoramaHotspot(params) {
+        let url = `${process.env.RENDERURL}/Render/UpdatePanoramaHotspot`;
+        let type = 'Post';
 
         return this.webAPI(url, type, params);
     }

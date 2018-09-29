@@ -1,11 +1,7 @@
 const catalog = {
     state: {},
-    mutations: {
-
-    },
-    actions: {
-
-    }
+    mutations: {},
+    actions: {}
 };
 
 export default catalog;

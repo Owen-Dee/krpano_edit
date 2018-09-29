@@ -38,7 +38,7 @@ module.exports = {
 
     build: {
         // Template for index.html
-        index: path.resolve(__dirname, '../dist/pano.html'),
+        index: path.resolve(__dirname, '../dist/pano-editor.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),

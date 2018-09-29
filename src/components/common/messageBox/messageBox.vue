@@ -3,14 +3,14 @@
         <div class="message-content">
             <div class="header">
                 <div class="title">{{ title }}</div>
-                <div class="close" @click="cancel">×</div>
+                <div class="close" @click="closeMessageBox">×</div>
             </div>
             <p class="content">{{ content }}</p>
-        <div>
-        </div>
-            <div class="btn-group">
-                <div class="btn" @click="cancel" v-show="isShowCancelBtn">{{ cancelBtnText }}</div>
-                <div class="btn" @click="confirm" v-show="isShowConfimrBtn">{{ confirmBtnText }}</div>
+            <div class="position-control">
+                <div class="btn-group">
+                    <div class="btn" @click="cancel" v-show="isShowCancelBtn">{{ cancelBtnText }}</div>
+                    <div class="btn" @click="confirm" v-show="isShowConfimrBtn">{{ confirmBtnText }}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -89,6 +89,9 @@
             destroy: function () {
                 this.$destroy();
                 document.body.removeChild(this.$el);
+            },
+            closeMessageBox: function() {
+                this.isShowMessageBox = false;
             }
         }
     };
@@ -136,13 +139,17 @@
                 line-height: 40px;
                 margin-left: 15px;
             }
-            .btn-group {
-                height: 40px;
-                width: 100%;
+            .position-control {
                 display: flex;
-                justify-content: center;
                 align-items: center;
-                margin-bottom: 10px;
+                height: 50px;
+                width: 100%;
+                padding-bottom: 5px;
+            }
+            .btn-group {
+                position: absolute;
+                right: 20px;
+                display: flex;
                 .btn {
                         margin-left: 10px;
                         height: 26px;

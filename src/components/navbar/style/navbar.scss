@@ -7,7 +7,7 @@
     left: 0px;
     background: $globalDarkBackgroundColor;
     z-index: 100;
-    font-size: 16px;
+    font-size: 14px;
     color: #cbc9c9;
     .title {
         position: absolute;
@@ -21,7 +21,8 @@
         left: 0px;
         right: 0px;
         margin: auto;
-        background: $globalGrayBackgroundColor;
+        background: $goldColor;
+        color: black;
     }
     .btn-group {
         position: absolute;
@@ -44,6 +45,10 @@
             align-items: center;
             border-radius: 2px;
             cursor: pointer;
+        }
+        .btn:hover {
+            background: $goldColor;
+            color: black;
         }
     }
 }

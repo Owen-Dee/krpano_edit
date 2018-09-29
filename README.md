@@ -1,21 +1,19 @@
-# qu_plus_krpano
+# krpano-edit
 
-> krpano edit
+## 安装软件
+安装Git, Node
 
-## Build Setup
+## 环境搭建
+* 1.从 jtl3d/krpano-edit fork一份到自己的空间中
+* 2.将fork后的repo克隆到本地工作目录
+  - git clone git@116.62.100.239:yourname/krpano-edit.git
+  - 进入krpano-edit文件夹: cd krpano-edit
+* 3.将原始的jtl3d/krpano-edit加到本地的remote中方便同步代码  
+  - add remote：git remote add jtl3d git@116.62.100.239:jtl3d/krpano-edit.git  
+  - 查看remote： git remote -v
+* 4.进入本地krpano-edit目录，运行 npm install,安装依赖的node包
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 运行
+* 1.开发环境: npm run dev
+* 2.dev打包: npm run staging
+* 6.product打包: npm run build

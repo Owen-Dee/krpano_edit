@@ -1,6 +1,12 @@
 <template>
     <div class="catalog">
-        <div class="room-name" v-text="roomType"></div>
+        <div class="room-name">
+            <div class="icon">
+                <img src="./img/position.svg" alt="">
+                <span>当前定位:</span>
+            </div>
+            <div class="name" v-text="roomType"></div>
+        </div>
         <div class="hotspot-added">
             <div class="add-btn" @click="addHotspot">添加切换热点</div>
         </div>
@@ -70,6 +76,8 @@
         },
         methods: {
             addHotspot() {
+                // 关闭全景图房间选择面板
+                window.Bus.$emit(window.EventEnum.CLOSE_PANORAMA);
                 window.Bus.$emit(window.EventEnum.SHOW_RENDER_JOBS);
             },
             showCurrentHotspot(item) {
@@ -79,6 +87,10 @@
                 this.krpanoAPI.set("view.vlookat", atv);
             },
             deleteHotspot(item) {
+                // 关闭全景图房间选择面板
+                window.Bus.$emit(window.EventEnum.CLOSE_PANORAMA);
+                // 关闭查询的渲染图面板
+                window.Bus.$emit(window.EventEnum.CLOSE_RENDER_JOB);
                 this.$msgBox.showMsgBox({
                     title: '温馨提示:',
                     content: '是否确认删除?'
